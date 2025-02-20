@@ -3,8 +3,8 @@ import Navbar from "../Components/Navbar";
 
 const Root = () => {
   return (
-    <div className="container mx-auto">
-      <Navbar/>
+    <div className="container mx-auto ">
+      <Navbar />
       <Outlet />
     </div>
   );
