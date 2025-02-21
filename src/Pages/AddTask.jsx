@@ -31,7 +31,7 @@ const AddTask = () => {
       description: description,
       deadline: deadline ? deadline.toISOString() : "",
       category: formData.get("category"),
-      Timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString(),
       userId: user.uid,
     };
     axiosPublic.post("/tasks", task).then((res) => {

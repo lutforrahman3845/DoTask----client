@@ -124,7 +124,7 @@ const Navbar = () => {
                     tabIndex={1}
                     className="dropdown-content menu bg-Primary rounded-box z-50 w-52 py-6 px-3 space-y-3 shadow "
                   >
-                    <div className="text-base text-gray-800  dark:text-white cursor-pointer rounded-lg font-semibold flex items-center gap-2">
+                    <div className="text-base text-white cursor-pointer rounded-lg font-semibold flex items-center gap-2">
                       <p>{user?.displayName}</p>
                     </div>
                     <div
@@ -142,7 +142,7 @@ const Navbar = () => {
                           });
                         })
                       }
-                      className="text-base text-gray-800 dark:text-white  rounded-lg cursor-pointer  font-semibold flex items-center gap-2"
+                      className="text-base text-white  rounded-lg cursor-pointer  font-semibold flex items-center gap-2"
                     >
                       <p>sign out</p>
                     </div>
