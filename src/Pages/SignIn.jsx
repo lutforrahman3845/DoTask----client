@@ -19,6 +19,7 @@ const SignIn = () => {
         userName: user?.displayName,
         userEmail: user?.email,
         userPhoto: user?.photoURL,
+        userId: user?.uid,
       };
       axiosPublic.post("/add-user", userInfo)
       toast.success("Succsessfully sing in", {
