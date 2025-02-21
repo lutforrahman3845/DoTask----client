@@ -13,15 +13,18 @@ const Task = ({
   category,
   timestamp,
   taskId,
+  onEdit,
 }) => {
   const axiosPublic = useAxiosPublic();
-  const {taskRefetch } = useGetTasks();
+  const { taskRefetch } = useGetTasks();
   const today = new Date();
   const taskDate = new Date(deadline);
-  const diffTime = taskDate - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  let diffTime = taskDate - today;
+  let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  if (today.toLocaleDateString() === taskDate.toLocaleDateString()) {
+    diffDays = 0;
+  }
   const isOverdue = diffTime < 0;
-
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -58,53 +61,68 @@ const Task = ({
       }
     });
   };
-
+  const taskDetails = { title, description, deadline, category, taskId };
   return (
-    <div className="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg shadow-md mt-4 border-l-4 border-blue-500">
-      <div className="flex justify-between items-start">
-        <div className="flex items-start gap-2">
-          <p className="font-semibold text-gray-900 dark:text-white">{id}.</p>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {title}
-            </h3>
+    <>
+      <div className="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg shadow-md mt-4 border-l-4 border-blue-500">
+        <div className="flex justify-between items-start">
+          <div className="flex items-start gap-2">
+            <p className="font-semibold text-gray-900 dark:text-white">{id}.</p>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                {title}
+              </h3>
 
-            <p className="text-gray-600 dark:text-gray-300">{description}</p>
+              <p className="text-gray-600 dark:text-gray-300">{description}</p>
 
-            <p className="text-sm font-medium text-gray-500 mt-1">
-              <span className="font-semibold text-gray-700 dark:text-gray-300">
-                Category:
-              </span>{" "}
-              {category}
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              <span className="font-semibold text-gray-700 dark:text-gray-300">
-                Created At:
-              </span>{" "}
-              {new Date(timestamp).toLocaleString()}
-            </p>
-            <p
-              className={`text-sm font-medium mt-1 text-white py-1 px-2 w-fit rounded-md ${
-                isOverdue ? "bg-red-500" : "bg-gray-500"
-              }`}
+              <p className="text-sm font-medium text-gray-500 mt-1">
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  Category:
+                </span>{" "}
+                {category}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                  Created At:
+                </span>{" "}
+                {new Date(timestamp).toLocaleString()}
+              </p>
+              {deadline && (
+                <p
+                  className={`text-sm font-medium mt-1  py-1 px-2 w-fit rounded-md ${
+                    diffDays === 0
+                      ? "bg-orange-500 text-Primary"
+                      : isOverdue
+                      ? "bg-red-500 text-white"
+                      : "bg-gray-500 text-white"
+                  }`}
+                >
+                  {diffDays === 0
+                    ? "Last Date"
+                    : isOverdue
+                    ? "Overdue"
+                    : `Due in ${diffDays} days`}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => onEdit(taskDetails)}
+              className="text-blue-500 hover:text-blue-700 cursor-pointer"
             >
-              {isOverdue ? "Overdue" : `Due in ${diffDays} days`}
-            </p>
+              <FaEdit size={18} />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="text-red-500 hover:text-red-700 cursor-pointer"
+            >
+              <FaTrash size={18} />
+            </button>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button className="text-blue-500 hover:text-blue-700 cursor-pointer">
-            <FaEdit size={18} />
-          </button>
-          <button
-            onClick={handleDelete}
-            className="text-red-500 hover:text-red-700 cursor-pointer"
-          >
-            <FaTrash size={18} />
-          </button>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -116,6 +134,7 @@ Task.propTypes = {
   category: PropTypes.string.isRequired,
   timestamp: PropTypes.string.isRequired,
   taskId: PropTypes.string.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default Task;
