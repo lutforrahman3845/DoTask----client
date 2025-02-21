@@ -6,28 +6,28 @@ import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { toast } from "react-toastify";
 import useGetTasks from "../Hooks/useGetTasks";
 
-const EditTaskModal = ({ task }) => {
+const DoneTaskEditModal = ({ doneTask }) => {
   
   const axiosPublic = useAxiosPublic();
   const { taskRefetch } = useGetTasks();
   const [errort, setErrort] = useState("");
   const [errord, setErrord] = useState("");
 
-  const [title, setTitle] = useState(task?.title || "");
-  const [description, setDescription] = useState(task?.description || "");
+  const [title, setTitle] = useState(doneTask?.title || "");
+  const [description, setDescription] = useState(doneTask?.description || "");
   const [deadline, setDeadline] = useState(
-    task?.deadline ? new Date(task.deadline) : null
+    doneTask?.deadline ? new Date(doneTask?.deadline) : null
   );
-  const [category, setCategory] = useState(task?.category || "To-Do");
-  const [taskId, setTaskId] = useState(task?.taskId || "");
+  const [category, setCategory] = useState(doneTask?.category || "To-Do");
+  const [taskId, setTaskId] = useState(doneTask?.taskId || "");
 
   useEffect(() => {
-    setTitle(task?.title || "");
-    setDescription(task?.description || "");
-    setDeadline(task?.deadline ? new Date(task.deadline) : "");
-    setTaskId(task?.taskId || "");
-    setCategory(task?.category || "To-Do");
-  }, [task, task?.title, task?.description, task?.deadline, task?.category]);
+    setTitle(doneTask?.title || "");
+    setDescription(doneTask?.description || "");
+    setDeadline(doneTask?.deadline ? new Date(doneTask?.deadline) : "");
+    setTaskId(doneTask?.taskId || "");
+    setCategory(doneTask?.category || "To-Do");
+  }, [doneTask]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,17 +64,17 @@ const EditTaskModal = ({ task }) => {
       }
       taskRefetch();
       from.reset();
-      document.getElementById("my_modal_1").close();
+      document.getElementById("my_modal_3").close();
     });
   };
   const handleClose = () => {
-    document.getElementById("my_modal_1").close();
+    document.getElementById("my_modal_3").close();
     const formData = document.getElementById("editTaskForm");
     formData.reset();
   };
   return (
     <div>
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="my_modal_3" className="modal">
         <div className="modal-box bg-white dark:bg-gray-800 ">
           <form onSubmit={handleSubmit} id="editTaskForm">
             <h2 className="text-xl font-bold mb-2">Update Task</h2>
@@ -136,7 +136,7 @@ const EditTaskModal = ({ task }) => {
     </div>
   );
 };
-EditTaskModal.propTypes = {
-  task: PropTypes.object.isRequired,
+DoneTaskEditModal.propTypes = {
+    doneTask: PropTypes.object.isRequired,
 };
-export default EditTaskModal;
+export default DoneTaskEditModal;

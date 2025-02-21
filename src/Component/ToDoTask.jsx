@@ -38,7 +38,6 @@ const ToDoTask = ({ task }) => {
       {modalInfo && (
         <EditTaskModal
           task={modalInfo}
-          onClose={() => document.getElementById("my_modal_1").showModal()}
         />
       )}
     </div>

@@ -6,28 +6,28 @@ import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { toast } from "react-toastify";
 import useGetTasks from "../Hooks/useGetTasks";
 
-const EditTaskModal = ({ task }) => {
+const ProTaskEditModal = ({ progrssTask }) => {
   
   const axiosPublic = useAxiosPublic();
   const { taskRefetch } = useGetTasks();
   const [errort, setErrort] = useState("");
   const [errord, setErrord] = useState("");
 
-  const [title, setTitle] = useState(task?.title || "");
-  const [description, setDescription] = useState(task?.description || "");
+  const [title, setTitle] = useState(progrssTask?.title || "");
+  const [description, setDescription] = useState(progrssTask?.description || "");
   const [deadline, setDeadline] = useState(
-    task?.deadline ? new Date(task.deadline) : null
+    progrssTask?.deadline ? new Date(progrssTask?.deadline) : null
   );
-  const [category, setCategory] = useState(task?.category || "To-Do");
-  const [taskId, setTaskId] = useState(task?.taskId || "");
+  const [category, setCategory] = useState(progrssTask?.category || "To-Do");
+  const [taskId, setTaskId] = useState(progrssTask?.taskId || "");
 
   useEffect(() => {
-    setTitle(task?.title || "");
-    setDescription(task?.description || "");
-    setDeadline(task?.deadline ? new Date(task.deadline) : "");
-    setTaskId(task?.taskId || "");
-    setCategory(task?.category || "To-Do");
-  }, [task, task?.title, task?.description, task?.deadline, task?.category]);
+    setTitle(progrssTask?.title || "");
+    setDescription(progrssTask?.description || "");
+    setDeadline(progrssTask?.deadline ? new Date(progrssTask?.deadline) : "");
+    setTaskId(progrssTask?.taskId || "");
+    setCategory(progrssTask?.category || "To-Do");
+  }, [progrssTask]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,17 +64,17 @@ const EditTaskModal = ({ task }) => {
       }
       taskRefetch();
       from.reset();
-      document.getElementById("my_modal_1").close();
+      document.getElementById("my_modal_2").close();
     });
   };
   const handleClose = () => {
-    document.getElementById("my_modal_1").close();
+    document.getElementById("my_modal_2").close();
     const formData = document.getElementById("editTaskForm");
     formData.reset();
   };
   return (
     <div>
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="my_modal_2" className="modal">
         <div className="modal-box bg-white dark:bg-gray-800 ">
           <form onSubmit={handleSubmit} id="editTaskForm">
             <h2 className="text-xl font-bold mb-2">Update Task</h2>
@@ -136,7 +136,7 @@ const EditTaskModal = ({ task }) => {
     </div>
   );
 };
-EditTaskModal.propTypes = {
-  task: PropTypes.object.isRequired,
+ProTaskEditModal.propTypes = {
+  progrssTask: PropTypes.object.isRequired,
 };
-export default EditTaskModal;
+export default ProTaskEditModal;

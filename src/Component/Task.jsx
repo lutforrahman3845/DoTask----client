@@ -87,7 +87,7 @@ const Task = ({
                 </span>{" "}
                 {new Date(timestamp).toLocaleString()}
               </p>
-              {deadline && (
+              {deadline && category !== 'Done' && (
                 <p
                   className={`text-sm font-medium mt-1  py-1 px-2 w-fit rounded-md ${
                     diffDays === 0
