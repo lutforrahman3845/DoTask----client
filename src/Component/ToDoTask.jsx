@@ -2,7 +2,10 @@ import PropTypes from "prop-types";
 import Task from "./Task";
 import EditTaskModal from "./EditTaskModal";
 import { useState } from "react";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const ToDoTask = ({ task }) => {
   const [modalInfo, setModalInfo] = useState(null);
@@ -12,11 +15,13 @@ const ToDoTask = ({ task }) => {
       <h3 className="text-lg md:text-xl font-bold text-center font-poppins">
         To Do
       </h3>
-      {task.length === 0 ? (
-        <p className="text-center text-red-500 mt-2">No tasks to show</p>
-      ) : (
-        <SortableContext items={task} strategy={verticalListSortingStrategy}>
-          {task.map((task, index) => (
+      <SortableContext items={task} strategy={verticalListSortingStrategy}>
+        {task.length === 0 ? (
+          <div className="min-h-[100px] flex items-center justify-center border-2 border-dashed border-gray-400">
+            <p className="text-red-500">No tasks to show</p>
+          </div>
+        ) : (
+          task.map((task, index) => (
             <Task
               key={task._id}
               title={task.title}
@@ -33,14 +38,11 @@ const ToDoTask = ({ task }) => {
                 }, 0);
               }}
             />
-          ))}
-        </SortableContext>
-      )}
-      {modalInfo && (
-        <EditTaskModal
-          task={modalInfo}
-        />
-      )}
+          ))
+        )}
+      </SortableContext>
+
+      {modalInfo && <EditTaskModal task={modalInfo} />}
     </div>
   );
 };

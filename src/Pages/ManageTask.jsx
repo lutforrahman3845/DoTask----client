@@ -100,15 +100,15 @@ const ManageTask = () => {
       setSourceList = setDoneTasks;
     }
 
-    if (todoTasks.find((task) => task._id === overId)) {
+    if (todoTasks.find((task) => task._id === overId) || todoTasks.length === 0) {
       destinationList = todoTasks;
       setDestinationList = setTodoTasks;
       newCategory = "To-Do";
-    } else if (inProgressTasks.find((task) => task._id === overId)) {
+    } else if (inProgressTasks.find((task) => task._id === overId) || inProgressTasks.length === 0) {
       destinationList = inProgressTasks;
       setDestinationList = setInProgressTasks;
       newCategory = "In Progress";
-    } else if (doneTasks.find((task) => task._id === overId)) {
+    } else if (doneTasks.find((task) => task._id === overId) || doneTasks.length === 0) {
       destinationList = doneTasks;
       setDestinationList = setDoneTasks;
       newCategory = "Done";
@@ -152,7 +152,7 @@ const ManageTask = () => {
           Effortlessly manage your tasks by adding, editing, and dragging them
           between To-Do, In Progress, and Done columns.
         </p>
-
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 xl:max-w-3/4 mx-auto">
           <ToDoTask task={todoTasks} />
           <InProgress task={inProgressTasks} />
