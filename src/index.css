@@ -8,3 +8,7 @@
     --font-poppins: 'Poppins', sans-serif;
     --color-Primary: #243c5a; 
 }
+
+.touch-action{
+    touch-action: none;
+}

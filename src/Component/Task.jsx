@@ -4,6 +4,8 @@ import useAxiosPublic from "../Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import useGetTasks from "../Hooks/useGetTasks";
+import { useSortable } from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities"
 
 const Task = ({
   title,
@@ -15,6 +17,24 @@ const Task = ({
   taskId,
   onEdit,
 }) => {
+  // DRAG AND DROP
+  const {attributes, listeners, setNodeRef,transform, transition, isDragging}=useSortable({id:taskId});
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    boxShadow: isDragging ? "0 4px 12px rgba(0, 0, 0, 0.1)" : "none", 
+    backgroundColor: isDragging ? "#f3f4f6" : "inherit", 
+  };
+  const handlePointerDown = (e) => {
+    if (e.target.closest("button")) {
+      e.preventDefault();
+      return;
+    }
+    listeners.onPointerDown(e);
+  };
+
+  // ----------------
   const axiosPublic = useAxiosPublic();
   const { taskRefetch } = useGetTasks();
   const today = new Date();
@@ -25,7 +45,8 @@ const Task = ({
     diffDays = 0;
   }
   const isOverdue = diffTime < 0;
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.stopPropagation();
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -63,8 +84,10 @@ const Task = ({
   };
   const taskDetails = { title, description, deadline, category, taskId };
   return (
-    <>
-      <div className="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg shadow-md mt-4 border-l-4 border-blue-500">
+    <div  ref={setNodeRef} {...attributes} {...listeners} style={style} onPointerDown={handlePointerDown} className=" touch-action">
+      <div
+       
+       className="bg-gray-200 dark:bg-gray-700 p-4 rounded-lg shadow-md mt-4 border-l-4 border-blue-500">
         <div className="flex justify-between items-start">
           <div className="flex items-start gap-2">
             <p className="font-semibold text-gray-900 dark:text-white">{id}.</p>
@@ -75,12 +98,6 @@ const Task = ({
 
               <p className="text-gray-600 dark:text-gray-300">{description}</p>
 
-              <p className="text-sm font-medium text-gray-500 mt-1">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">
-                  Category:
-                </span>{" "}
-                {category}
-              </p>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 <span className="font-semibold text-gray-700 dark:text-gray-300">
                   Created At:
@@ -122,7 +139,7 @@ const Task = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import Task from "./Task";
 import { useState } from "react";
 import ProTaskEditModal from "./ProTaskEditModal";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 const InProgress = ({ task }) => {
   const [progrssTask, setProgrssTask] = useState(null);
@@ -14,7 +15,7 @@ const InProgress = ({ task }) => {
       {task.length === 0 ? (
         <p className="text-center text-red-500 mt-2">No tasks to show</p>
       ) : (
-        <div>
+        <SortableContext items={task} strategy={verticalListSortingStrategy}>
           {task.map((task, index) => (
             <Task
               key={task._id}
@@ -33,7 +34,7 @@ const InProgress = ({ task }) => {
               }}
             />
           ))}
-        </div>
+        </SortableContext>
       )}
       {progrssTask && (
         <ProTaskEditModal
